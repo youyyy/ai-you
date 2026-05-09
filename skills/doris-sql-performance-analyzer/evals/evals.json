@@ -1,0 +1,66 @@
+{
+  "skill_name": "doris-sql-performance-analyzer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我需要对这条 Doris SQL 做完整性能分析，输出正式报告。SQL:\n\nSELECT u.user_id, u.user_name, COUNT(o.order_id) as order_cnt, SUM(o.amount) as total_amount\nFROM ods_prod.user_info u\nLEFT JOIN ods_prod.order_info o ON u.user_id = o.user_id\nWHERE o.create_time >= '2026-01-01' AND o.create_time < '2026-04-01'\nGROUP BY u.user_id, u.user_name\nHAVING order_cnt > 5\nORDER BY total_amount DESC\nLIMIT 100;",
+      "expected_output": "触发 skill，走完整流程：解析表名→问询约束→获取DDL→生成影子表脚本→ANALYZE TABLE→获取执行计划→分析→生成含P0/P1/P2优先级的报告",
+      "files": [],
+      "expectations": [
+        "Output includes performance_report.md at performance-reports/<timestamp>/",
+        "Report contains table structure analysis section",
+        "Report contains execution plan analysis",
+        "Report contains bottleneck identification with P0/P1/P2 priority labels",
+        "Report contains specific, actionable optimization suggestions",
+        "Report mentions ANALYZE TABLE as a step",
+        "Report asks about constraints (table modification permissions) or mentions them"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "帮我看看这条 Doris SQL 为什么慢，给优化建议：\n\nSELECT a.*, b.class_name, c.teacher_name\nFROM ods_stu.score a\nJOIN ods_stu.class b ON a.class_id = b.class_id\nJOIN ods_stu.teacher c ON b.teacher_id = c.teacher_id\nWHERE a.score < 60\nORDER BY a.score;",
+      "expected_output": "触发 skill，走完整流程",
+      "files": [],
+      "expectations": [
+        "Output includes performance_report.md",
+        "Report identifies why the query is slow (specific bottlenecks)",
+        "Report provides specific SQL optimization suggestions",
+        "Report checks for common optimization patterns (EXISTS→SEMI JOIN, redundant JOIN, bucket analysis)"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Doris 分桶策略怎么评估？我要分析这条 SQL：\nSELECT department_id, COUNT(*) as cnt FROM ods_hr.employee WHERE status = 1 GROUP BY department_id;",
+      "expected_output": "触发 skill，特别是分桶评估相关分析",
+      "files": [],
+      "expectations": [
+        "Output includes bucket strategy analysis",
+        "Bucket analysis provides specific bucket count recommendations (not just general advice)",
+        "Analysis references doris_analyze_table_storage or explains how to evaluate buckets",
+        "Report identifies whether the employee table has appropriate bucketing for the GROUP BY"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "帮我把这条 SQL 的 WHERE 条件改一下，时间范围改成 2026-06-01 到 2026-06-30",
+      "expected_output": "不触发 skill，仅做 SQL 改写，不走性能分析流程",
+      "files": [],
+      "expectations": [
+        "Does NOT create a performance report",
+        "Output is a simple SQL modification, not a full analysis",
+        "Response is concise (not a multi-section report)"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "写一个 Doris 建表语句，包含分桶和分区，用作订单表",
+      "expected_output": "不触发 skill，仅生成建表语句",
+      "files": [],
+      "expectations": [
+        "Does NOT create a performance report",
+        "Output is a CREATE TABLE statement with bucket and partition definitions",
+        "Response is concise (not a multi-section report)"
+      ]
+    }
+  ]
+}

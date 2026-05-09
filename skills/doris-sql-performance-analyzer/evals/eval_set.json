@@ -1,0 +1,22 @@
+[
+  {"query": "我需要对这条 Doris SQL 做完整性能分析，包括执行计划、Profile、影子表测试，输出正式报告。SQL: SELECT * FROM ods_prod.user_table WHERE update_time >= '2026-05-01'", "should_trigger": true},
+  {"query": "Doris 分桶策略怎么评估？要做完整的性能测试，生成模拟数据和报告", "should_trigger": true},
+  {"query": "帮我分析这条 Doris SQL 的执行计划，看看为什么查询这么慢，要做完整的性能评估", "should_trigger": true},
+  {"query": "创建影子表来测试这条 Doris SQL 的性能，生成模拟数据并输出分析报告", "should_trigger": true},
+  {"query": "Doris 性能分析，需要检查表结构、分桶评估和Profile分析", "should_trigger": true},
+  {"query": "这条 Doris SQL 跑得很慢，帮我做完整的性能分析：SELECT a.id, b.name FROM table_a a JOIN table_b b ON a.b_id = b.id WHERE a.create_time > '2026-01-01'", "should_trigger": true},
+  {"query": "帮我看下这个 Doris 查询的 Profile，为什么有时候要跑 30 秒", "should_trigger": true},
+  {"query": "Doris SQL 调优，这条查询在线上超时了，帮我分析优化：SELECT * FROM orders WHERE status IN (0,1,2) ORDER BY create_time DESC LIMIT 50", "should_trigger": true},
+  {"query": "你好，我需要做 Doris 的慢查询优化，能帮我分析一下这条 SQL 的执行计划吗？", "should_trigger": true},
+  {"query": "这条 Doris 查询太慢了，group by 之后要 20 多秒，帮我看看分桶是不是有问题", "should_trigger": true},
+  {"query": "帮我把这条 SQL 的 WHERE 条件改一下，时间范围改成 2026-06-01 到 2026-06-30", "should_trigger": false},
+  {"query": "帮我写一个 Doris 建表语句，包含分桶和分区，用作订单表", "should_trigger": false},
+  {"query": "这条 SQL 写法有问题吗？帮我优化下语法：SELECT * FROM users WHERE name LIKE '%张%'", "should_trigger": false},
+  {"query": "MySQL 查询太慢了，帮我分析一下执行计划", "should_trigger": false},
+  {"query": "帮我写一个 Python 脚本，连接 Doris 数据库查询数据", "should_trigger": false},
+  {"query": "这条 SQL 报错了，ORA-00933，帮我看看语法哪里有问题", "should_trigger": false},
+  {"query": "Doris 数据库怎么安装？我想搭一个测试环境", "should_trigger": false},
+  {"query": "帮我生成一个 PostgreSQL 的建表语句，包含索引", "should_trigger": false},
+  {"query": "这条 SQL 的执行结果不对，帮我 debug 下逻辑", "should_trigger": false},
+  {"query": "我想学习 Doris 的基础语法，有什么好的教程推荐吗", "should_trigger": false}
+]
