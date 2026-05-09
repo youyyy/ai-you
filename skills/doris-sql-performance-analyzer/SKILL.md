@@ -12,7 +12,6 @@ description: |
 ---
 
 # Doris SQL 性能分析器
-<!-- managed by ai-you, auto-synced to cc-switch & ai-study -->
 
 根据用户提供的 Doris SQL，自动完成从表结构分析到性能报告输出的完整流程。
 
