@@ -37,13 +37,13 @@ description: |
 
 优先使用 `doris_get_table_basic_info` 一次性获取行数、列数、分区数、表大小。然后使用 `doris_get_table_schema` 获取完整 DDL。
 
-补充检查 `sql/table_schemas/` 目录是否有匹配的本地缓存（文件名格式：`<库名>_<表名>.sql`）。
+补充检查 `ddl/table_schemas/` 目录是否有匹配的本地缓存（文件名格式：`<库名>_<表名>.sql`）。
 
 对**没有本地缓存且 MCP 工具不可用**的表，一次性问询用户贴建表语句并选择数据量级（1万/10万/100万/1000万行）。
 
 ### Step 4: 保存建表语句到本地
 
-将本轮获取到的建表语句保存到 `sql/table_schemas/<库名>_<表名>.sql`，供下次复用。
+将本轮获取到的建表语句保存到 `ddl/table_schemas/<库名>_<表名>.sql`，供下次复用。
 
 ### Step 5: 生成影子表脚本
 
@@ -231,7 +231,7 @@ Profile 提供了 EXPLAIN 无法反映的运行时细节：实际内存消耗、
 ## 输出文件结构
 
 ```
-sql/table_schemas/
+ddl/table_schemas/
   ├── <库名>_<表名1>.sql
   └── <库名>_<表名2>.sql
 
