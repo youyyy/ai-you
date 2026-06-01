@@ -1,0 +1,68 @@
+{
+  "skill_name": "doris-data-generator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "帮我给 orders 表造 10 万行测试数据，orders 表在 doris 的 ods_prod 库里。",
+      "expected_output": "触发 skill，走完整流程：获取表结构→确认数据量→生成 DDL+DML 文件到 mock-data/ 目录",
+      "files": [],
+      "expectations": [
+        "Ask for confirmation of data volume before generating scripts",
+        "Output DDL file at mock-data/ddl/ with CREATE TABLE IF NOT EXISTS",
+        "Output DML file at mock-data/dml/ with INSERT INTO ... VALUES batches",
+        "DML file contains 100000 rows across multiple INSERT batches (500-1000 rows each)",
+        "Data values are business-meaningful (not just 1,2,3 literals)",
+        "Generated files use replication_num = 1 and BUCKETS 10 for test environment"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "造点模拟数据，SQL:\nSELECT u.user_id, u.user_name, COUNT(o.order_id) as cnt\nFROM ods_prod.users u\nLEFT JOIN ods_prod.orders o ON u.user_id = o.user_id\nWHERE o.status = 1\nGROUP BY u.user_id, u.user_name;",
+      "expected_output": "触发 skill，从 SQL 中解析出 users 和 orders 两张表，获取表结构，按 JOIN 逻辑生成关联数据",
+      "files": [],
+      "expectations": [
+        "Extract both tables (users and orders) from the SQL",
+        "Use MCP tools to get table structures for both tables",
+        "Ensure user_id values overlap between users and orders tables (JOIN matchable)",
+        "Generate o.status=1 for approximately 30-70% of orders rows",
+        "Output separate DDL files per table and a single DML file",
+        "Include a data generation plan preview before outputting files"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "我要给 crm_user_metrics_a 表造 500 万行压测数据，要求 status 分布：0=10%, 1=80%, 2=10%，create_time 在 2026 年范围内。",
+      "expected_output": "触发 skill，确认数据量级和分布要求，生成造数脚本",
+      "files": [],
+      "expectations": [
+        "Use MCP tool to get table schema for crm_user_metrics_a",
+        "Generate data with the specified distribution (10%/80%/10%)",
+        "Generate create_time values within 2026 year range",
+        "Generate 5,000,000 rows across multiple INSERT batches",
+        "Suggested ANALYZE TABLE after data insertion"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "帮我把这条 SQL 的 WHERE 条件改一下，时间范围改成 2026-06-01 到 2026-06-30",
+      "expected_output": "不触发 skill，仅做 SQL 改写，不走数据生成流程",
+      "files": [],
+      "expectations": [
+        "Does NOT create mock-data/ directory or any files",
+        "Response is a simple SQL modification, not a data generation workflow",
+        "Does not call doris_get_table_schema or other MCP tools"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "这条 SQL 跑得很慢，帮我看看能不能优化：SELECT * FROM orders WHERE status = 1 ORDER BY create_time;",
+      "expected_output": "不触发 skill，这是性能分析需求，应留给 doris-sql-performance-analyzer",
+      "files": [],
+      "expectations": [
+        "Does NOT start data generation workflow",
+        "May suggest user try the doris-sql-performance-analyzer skill instead",
+        "Does not generate any mock-data/ files"
+      ]
+    }
+  ]
+}
